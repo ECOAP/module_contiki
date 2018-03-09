@@ -90,7 +90,10 @@ class CoAPWrapper(CommunicationWrapper):
 
     def __serial_listen(self, stop_event):
         while not stop_event.is_set():
-            self.log.info("%s", self.slip_process.stdout.readline().strip())
+            try:
+                self.log.info("%s", self.slip_process.stdout.readline().strip())
+            except Exception:
+                self.log.info("Error coapwrapper")
 
     @asyncio.coroutine
     def coap_event_server(self, comm_wrapper, ip6_address, coap_port):
@@ -130,7 +133,6 @@ class EventResource(resource.Resource):
     @asyncio.coroutine
     def render_post(self, request):
         content = request.payload
-        # print("Event from {}, payload {}".format(request.remote.sockaddr[0], content))
         if self.comm_wrapper.event_cb is not None:
             self.comm_wrapper.event_cb(content)
         response = aiocoap.Message(code=aiocoap.EMPTY, payload="")
