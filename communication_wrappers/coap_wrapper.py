@@ -97,28 +97,7 @@ class CoAPWrapper(CommunicationWrapper):
     def __serial_listen(self, stop_event):
         while not stop_event.is_set():
             try:
-                (out, err) = self.slip_process.communicate()
-                self.log.info("%s", out.strip())
-                self.log.info("%s", err.strip())
-                if self.slip_process.returncode != 0:
-                    self.log.info("ERROR")
-
-                    if "cooja" in self.serial_dev:
-                        cmd = 'sudo ../../agent_modules/contiki/communication_wrappers/bin/tunslip6-cooja -C -D' + self.serial_delay + ' -B ' + self.serial_baudrate + ' -s ' + self.serial_dev + ' ' + self.tunslip_ip_addr
-                        self.log.info(cmd)
-                        self.slip_process = subprocess.Popen(
-                            ['sudo', '../../agent_modules/contiki/communication_wrappers/bin/tunslip6-cooja',
-                             '-D' + self.serial_delay, '-B', self.serial_baudrate, '-C', '-s' + self.serial_dev, self.tunslip_ip_addr],
-                            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                            universal_newlines=True)
-                    else:
-                        cmd = 'sudo ../../agent_modules/contiki/communication_wrappers/bin/tunslip6 -C -B ' + self.serial_baudrate + ' -s ' + self.serial_dev + ' ' + self.tunslip_ip_addr
-                        self.log.info(cmd)
-                        self.slip_process = subprocess.Popen(
-                            ['sudo', '../../agent_modules/contiki/communication_wrappers/bin/tunslip6',
-                             '-D' + self.serial_delay, '-B', self.serial_baudrate, '-C', '-s' + self.serial_dev, self.tunslip_ip_addr],
-                            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                            universal_newlines=True)
+                self.log.info("%s", self.slip_process.stdout.readline().strip())
 
             except Exception:
                 self.log.info("Error coapwrapper")
