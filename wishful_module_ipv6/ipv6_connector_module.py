@@ -19,3 +19,19 @@ class IPv6Connector(NetConnectorModule):
             return node.forward_rpc("rpl_connector", "rpl_set_border_router", rpl_prefix)
         except:
             traceback.print_exc(file=sys.stdout)
+
+    @wishful_module.bind_function(upis.net.add_route)
+    def ipv6_route_add(self, dest_ipv6_addr, num_hops, nexthop_ipv6_addr):
+        node = self.node_factory.get_node(self.interface)
+        try:
+            return node.forward_rpc("ipv6_connector", "add_route", dest_ipv6_addr, num_hops, nexthop_ipv6_addr)
+        except:
+            traceback.print_exc(file=sys.stdout)
+
+    @wishful_module.bind_function(upis.net.add_neighbor)
+    def nd6_add_neighbor(self, neighbor_ipv6_addr, neighbor_mac_addr, is_router):
+        node = self.node_factory.get_node(self.interface)
+        try:
+            return node.forward_rpc("ipv6_connector", "add_neighbor", neighbor_ipv6_addr, neighbor_mac_addr, is_router)
+        except:
+            traceback.print_exc(file=sys.stdout)
