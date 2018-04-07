@@ -24,7 +24,7 @@ class IPv6Connector(NetConnectorModule):
     def ipv6_route_add(self, dest_ipv6_addr, num_hops, nexthop_ipv6_addr):
         node = self.node_factory.get_node(self.interface)
         try:
-            return node.forward_rpc("ipv6_connector", "add_route", dest_ipv6_addr, num_hops, nexthop_ipv6_addr)
+            return node.forward_rpc("ipv6_connector", "add_route", dest_ipv6_addr, nexthop_ipv6_addr, num_hops)
         except:
             traceback.print_exc(file=sys.stdout)
 
