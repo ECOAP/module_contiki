@@ -35,3 +35,12 @@ class IPv6Connector(NetConnectorModule):
             return node.forward_rpc("ipv6_connector", "add_neighbor", neighbor_ipv6_addr, neighbor_mac_addr, is_router)
         except:
             traceback.print_exc(file=sys.stdout)
+
+
+    @wishful_module.bind_function(upis.net.clear_route_table)
+    def clear_route_table(self):
+        node = self.node_factory.get_node(self.interface)
+        try:
+            return node.forward_rpc("ipv6_connector", "clear_route_table")
+        except:
+            traceback.print_exc(file=sys.stdout)
